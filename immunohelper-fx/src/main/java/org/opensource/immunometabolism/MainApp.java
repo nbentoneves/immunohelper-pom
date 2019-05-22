@@ -1,45 +1,48 @@
 package org.opensource.immunometabolism;
 
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.stage.Stage;
-import org.apache.poi.ss.usermodel.WorkbookFactory;
+import org.opensource.immunometabolism.config.SpringFXMLLoader;
+import org.opensource.immunometabolism.view.FxmlView;
+import org.opensource.immunometabolism.view.StageManager;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.context.annotation.Bean;
 
-@SpringBootApplication(scanBasePackages = {"org.opensource", "org.immunometabolism"})
+@SpringBootApplication
 public class MainApp extends Application {
 
     private ConfigurableApplicationContext springContext;
-    private Parent root;
+    private StageManager stageManager;
 
     @Override
-    public void init() throws Exception {
-        springContext = SpringApplication.run(MainApp.class);
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/scene.fxml"));
-        fxmlLoader.setControllerFactory(springContext::getBean);
-        root = fxmlLoader.load();
+    public void init() {
+        springContext = bootstrapSpringApplicationContext();
     }
 
     @Override
-    public void start(Stage primaryStage) throws Exception {
-        primaryStage.setTitle("Hello World");
-        Scene scene = new Scene(root, 800, 600);
-        primaryStage.setScene(scene);
-        primaryStage.show();
+    public void start(Stage stage) {
+        stageManager = springContext.getBean(StageManager.class, stage);
+        stageManager.switchScene(FxmlView.MAIN);
     }
 
     @Override
-    public void stop() throws Exception {
-        springContext.stop();
+    public void stop() {
+        springContext.close();
     }
-
 
     public static void main(String[] args) {
         launch(MainApp.class, args);
+    }
+
+    /////////////////////////// PRIVATE ///////////////////////////////////////
+    private ConfigurableApplicationContext bootstrapSpringApplicationContext() {
+        SpringApplicationBuilder builder = new SpringApplicationBuilder(MainApp.class);
+        String[] args = getParameters().getRaw().stream().toArray(String[]::new);
+        builder.headless(false); //needed for TestFX integration testing or eles will get a java.awt.HeadlessException during tests
+        return builder.run(args);
     }
 
 }

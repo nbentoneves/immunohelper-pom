@@ -9,6 +9,7 @@ open module immunohelper.fx {
     requires spring.boot;
     requires spring.boot.autoconfigure;
     requires poi;
+    requires slf4j.api;
 
     requires immunohelper.support;
 }
