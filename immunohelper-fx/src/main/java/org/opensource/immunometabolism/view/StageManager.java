@@ -4,14 +4,9 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import org.opensource.immunometabolism.config.SpringFXMLLoader;
-import org.slf4j.Logger;
-import org.springframework.context.annotation.Lazy;
-import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.util.Objects;
-
-import static org.slf4j.LoggerFactory.getLogger;
 
 public class StageManager {
 
@@ -23,25 +18,19 @@ public class StageManager {
         this.primaryStage = stage;
     }
 
-    public void switchScene(final FxmlView view) {
+    public void switchScene(final Views view) throws IOException {
         Parent viewRootNodeHierarchy = loadViewNodeHierarchy(view.getFxmlFile());
-        show(viewRootNodeHierarchy, view.getTitle(), true);
+        render(viewRootNodeHierarchy, view.getTitle(), true);
     }
 
-    public void openScene(final FxmlView view) {
+    public void openScene(final Views view) throws IOException {
         Parent viewRootNodeHierarchy = loadViewNodeHierarchy(view.getFxmlFile());
-        show(viewRootNodeHierarchy, view.getTitle(), false);
+        render(viewRootNodeHierarchy, view.getTitle(), false);
     }
 
-    private void show(final Parent rootnode, String title, boolean switchScene) {
+    private void render(final Parent rootnode, String title, boolean switchScene) {
 
-        Stage stage;
-
-        if (!switchScene) {
-            stage = new Stage();
-        } else {
-            stage = this.primaryStage;
-        }
+        Stage stage = !switchScene ? new Stage() : this.primaryStage;
 
         Scene scene = prepareScene(rootnode, stage);
         stage.setTitle(title);
@@ -51,13 +40,13 @@ public class StageManager {
 
     }
 
-    private Scene prepareScene(Parent rootnode, Stage stage) {
+    private Scene prepareScene(Parent rootNode, Stage stage) {
         Scene scene = stage.getScene();
 
         if (scene == null) {
-            scene = new Scene(rootnode);
+            scene = new Scene(rootNode);
         }
-        scene.setRoot(rootnode);
+        scene.setRoot(rootNode);
         return scene;
     }
 
@@ -67,13 +56,8 @@ public class StageManager {
      *
      * @return Parent root node of the FXML document hierarchy
      */
-    private Parent loadViewNodeHierarchy(String fxmlFilePath) {
-        Parent rootNode = null;
-        try {
-            rootNode = springFXMLLoader.load(fxmlFilePath);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    private Parent loadViewNodeHierarchy(String fxmlFilePath) throws IOException {
+        Parent rootNode = springFXMLLoader.load(fxmlFilePath);
         Objects.requireNonNull(rootNode, "A Root FXML node must not be null");
         return rootNode;
     }

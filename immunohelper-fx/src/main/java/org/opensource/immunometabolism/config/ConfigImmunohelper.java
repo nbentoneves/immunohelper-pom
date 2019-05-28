@@ -12,7 +12,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
 
-import java.io.IOException;
 import java.util.ResourceBundle;
 
 @Configuration
@@ -23,14 +22,13 @@ public class ConfigImmunohelper {
 
     @Bean
     public ResourceBundle resourceBundle() {
-        return ResourceBundle.getBundle("Bundle");
+        return ResourceBundle.getBundle("bundle");
     }
 
-    @Lazy(value = true) //Stage only created after Spring context bootstap
+    @Lazy //Stage only created after Spring context bootstap
     @Bean
-    public StageManager stageManager(Stage stage) throws IOException {
+    public StageManager stageManager(Stage stage) {
         return new StageManager(springFXMLLoader, stage);
     }
-
 
 }

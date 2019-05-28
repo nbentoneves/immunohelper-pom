@@ -2,7 +2,7 @@ package org.opensource.immunometabolism.view;
 
 import java.util.ResourceBundle;
 
-public enum FxmlView {
+public enum Views {
 
     MAIN {
         @Override
@@ -12,9 +12,10 @@ public enum FxmlView {
 
         @Override
         String getFxmlFile() {
-            return "/scene.fxml";
+            return "/view/main.fxml";
         }
-    }, ABOUT {
+    },
+    ABOUT {
         @Override
         String getTitle() {
             return getStringFromResourceBundle("about.title");
@@ -22,7 +23,7 @@ public enum FxmlView {
 
         @Override
         String getFxmlFile() {
-            return "/about.fxml";
+            return "/view/about.fxml";
         }
     };
 
@@ -31,7 +32,7 @@ public enum FxmlView {
     abstract String getFxmlFile();
 
     String getStringFromResourceBundle(String key) {
-        return ResourceBundle.getBundle("Bundle").getString(key);
+        return ResourceBundle.getBundle("bundle").getString(key);
     }
 
 }
