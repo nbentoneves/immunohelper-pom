@@ -28,6 +28,16 @@
             <artifactId>spring-context</artifactId>
         </dependency>
 
+        <!-- Logging -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+        </dependency>
+
         <!-- Kotlin -->
         <dependency>
             <groupId>org.jetbrains.kotlin</groupId>
@@ -45,6 +55,17 @@
             <artifactId>kotlin-test-junit</artifactId>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.hamcrest</groupId>
+            <artifactId>hamcrest</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <scope>test</scope>
+        </dependency>
+
     </dependencies>
 
     <build>
@@ -60,7 +81,11 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
+            </plugin>
 
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
             </plugin>
 
             <plugin>
@@ -73,6 +98,21 @@
                             <Automatic-Module-Name>immunohelper.support</Automatic-Module-Name>
                         </manifestEntries>
                     </archive>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <configuration>
+                    <excludes>
+                        <exclude>org/immunohelper/io/exception/InvalidDataFileException.class</exclude>
+                        <exclude>org/immunohelper/io/exception/InvalidFileException.class</exclude>
+                        <exclude>org/immunohelper/io/exception/InvalidHeaderFileException.class</exclude>
+                    </excludes>
+
+                    <!-- FIXME: Remove this -->
+                    <haltOnFailure>false</haltOnFailure>
                 </configuration>
             </plugin>
         </plugins>
