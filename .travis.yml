@@ -9,9 +9,8 @@ matrix:
       branches:
         only:
           - master
-      before_script: cd immunohelper-support
-      install: mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
-      script: mvn test -B
+      install: mvn -f immunohelper-support/pom.xml install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
+      script: mvn -f immunohelper-support/pom.xml test -B
 
 notifications:
   email:
