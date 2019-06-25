@@ -1,0 +1,18 @@
+matrix:
+  include:
+    - language: java
+      sudo: false
+      jdk: openjdk12
+      cache:
+        directories:
+          - "~/.m2/repository"
+      branches:
+        only:
+          - master
+      before_script: cd immunohelper-support
+      install: mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
+      script: mvn test -B
+
+notifications:
+  email:
+    - nbento.neves@gmail.com
